@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Vikash Madhow
+ * Copyright (c) 2020 2017 Vikash Madhow
  */
 
 package ma.vi.serialization;
@@ -36,7 +36,7 @@ public class JsonSerializerBuilder extends AbstractSerializerBuilder<JsonSeriali
     json.inlineSingleRefObjects = inlineSingleRefObjects;
     return json;
   }
-
+0
   private JsonSerializerBuilder() {
   }
 }
