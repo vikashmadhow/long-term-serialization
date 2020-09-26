@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
 package ma.vi.xml;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static javax.xml.stream.XMLStreamConstants.*;
 
@@ -84,10 +85,9 @@ public class Fragment {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    Fragment element = (Fragment) o;
-
+    Fragment element = (Fragment)o;
     if (type != element.type) return false;
-    if (text != null ? !text.equals(element.text) : element.text != null) return false;
+    if (!Objects.equals(text, element.text)) return false;
     return attributes.equals(element.attributes);
   }
 

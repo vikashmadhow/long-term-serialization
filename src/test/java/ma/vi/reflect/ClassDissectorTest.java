@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
 package ma.vi.reflect;
@@ -128,14 +128,15 @@ public class ClassDissectorTest {
           T2.of(methodDescriptor("notifyAll"), Object.class.getDeclaredMethod("notifyAll")),
           T2.of(methodDescriptor("wait"), Object.class.getDeclaredMethod("wait")),
           T2.of(methodDescriptor("wait", long.class), Object.class.getDeclaredMethod("wait", long.class)),
-          T2.of(methodDescriptor("wait", long.class, int.class), Object.class.getDeclaredMethod("wait", long.class, int.class)),
+          T2.of(methodDescriptor("wait", long.class, int.class),
+                Object.class.getDeclaredMethod("wait", long.class, int.class)),
           T2.of(methodDescriptor("toString"), Object.class.getDeclaredMethod("toString")),
           T2.of(methodDescriptor("equals", Object.class), A.class.getMethod("equals", Object.class)),
           T2.of(methodDescriptor("hashCode"), Object.class.getMethod("hashCode"))
 
       );
     } catch (Exception e) {
-      throw e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException(e);
+      throw e instanceof RuntimeException ? (RuntimeException)e : new RuntimeException(e);
     }
   }
 
@@ -150,21 +151,22 @@ public class ClassDissectorTest {
     assertEquals(
         methods(A.class),
         Maps.put(methods,
-            T2.of(methodDescriptor("a"), A.class.getDeclaredMethod("a")),
-            T2.of(methodDescriptor("a", int[].class), A.class.getDeclaredMethod("a", int[].class)),
-            T2.of(methodDescriptor("b", int.class), A.class.getDeclaredMethod("b", int.class)),
-            T2.of(methodDescriptor("b", String.class), A.class.getDeclaredMethod("b", String.class)),
-            T2.of(methodDescriptor("c"), A.class.getDeclaredMethod("c")),
-            T2.of(methodDescriptor("c", int.class, String.class, Object[].class), A.class.getDeclaredMethod("c", int.class, String.class, Object[].class)),
-            T2.of(methodDescriptor("k"), A.class.getDeclaredMethod("k")),
-            T2.of(methodDescriptor("toString"), A.class.getDeclaredMethod("toString")))
+                 T2.of(methodDescriptor("a"), A.class.getDeclaredMethod("a")),
+                 T2.of(methodDescriptor("a", int[].class), A.class.getDeclaredMethod("a", int[].class)),
+                 T2.of(methodDescriptor("b", int.class), A.class.getDeclaredMethod("b", int.class)),
+                 T2.of(methodDescriptor("b", String.class), A.class.getDeclaredMethod("b", String.class)),
+                 T2.of(methodDescriptor("c"), A.class.getDeclaredMethod("c")),
+                 T2.of(methodDescriptor("c", int.class, String.class, Object[].class),
+                       A.class.getDeclaredMethod("c", int.class, String.class, Object[].class)),
+                 T2.of(methodDescriptor("k"), A.class.getDeclaredMethod("k")),
+                 T2.of(methodDescriptor("toString"), A.class.getDeclaredMethod("toString")))
     );
 
     assertEquals(
         fields(A.class),
         Maps.of(T2.of("e", A.class.getDeclaredField("e")),
-            T2.of("f", A.class.getDeclaredField("f")),
-            T2.of("g", A.class.getDeclaredField("g")))
+                T2.of("f", A.class.getDeclaredField("f")),
+                T2.of("g", A.class.getDeclaredField("g")))
     );
 
     assertEquals(
@@ -180,14 +182,14 @@ public class ClassDissectorTest {
     assertEquals(
         methods(B.class),
         Maps.of(T2.of(methodDescriptor("a"), B.class.getDeclaredMethod("a")),
-            T2.of(methodDescriptor("d"), B.class.getDeclaredMethod("d")),
-            T2.of(methodDescriptor("identity", int.class), B.class.getDeclaredMethod("identity", int.class)))
+                T2.of(methodDescriptor("d"), B.class.getDeclaredMethod("d")),
+                T2.of(methodDescriptor("identity", int.class), B.class.getDeclaredMethod("identity", int.class)))
     );
 
     assertEquals(
         fields(B.class),
         Maps.of(T2.of("e", B.class.getDeclaredField("e")),
-            T2.of("y", B.class.getDeclaredField("y")))
+                T2.of("y", B.class.getDeclaredField("y")))
     );
 
     assertEquals(componentClasses(B.class), Collections.singletonList(B.class));
@@ -201,31 +203,32 @@ public class ClassDissectorTest {
     assertEquals(
         methods(C.class),
         Maps.put(methods,
-            T2.of(methodDescriptor("a"), A.class.getDeclaredMethod("a")),
-            T2.of(methodDescriptor("a", int[].class), A.class.getDeclaredMethod("a", int[].class)),
-            T2.of(methodDescriptor("b", String.class), A.class.getDeclaredMethod("b", String.class)),
-            T2.of(methodDescriptor("c"), A.class.getDeclaredMethod("c")),
-            T2.of(methodDescriptor("c", int.class, String.class, Object[].class), A.class.getDeclaredMethod("c", int.class, String.class, Object[].class)),
-            T2.of(methodDescriptor("k"), C.class.getDeclaredMethod("k")),
-            T2.of(methodDescriptor("toString"), A.class.getDeclaredMethod("toString")),
+                 T2.of(methodDescriptor("a"), A.class.getDeclaredMethod("a")),
+                 T2.of(methodDescriptor("a", int[].class), A.class.getDeclaredMethod("a", int[].class)),
+                 T2.of(methodDescriptor("b", String.class), A.class.getDeclaredMethod("b", String.class)),
+                 T2.of(methodDescriptor("c"), A.class.getDeclaredMethod("c")),
+                 T2.of(methodDescriptor("c", int.class, String.class, Object[].class),
+                       A.class.getDeclaredMethod("c", int.class, String.class, Object[].class)),
+                 T2.of(methodDescriptor("k"), C.class.getDeclaredMethod("k")),
+                 T2.of(methodDescriptor("toString"), A.class.getDeclaredMethod("toString")),
 
-            T2.of(methodDescriptor("identity", int.class), B.class.getDeclaredMethod("identity", int.class)),
+                 T2.of(methodDescriptor("identity", int.class), B.class.getDeclaredMethod("identity", int.class)),
 
-            T2.of(methodDescriptor("d"), C.class.getDeclaredMethod("d")),
-            T2.of(methodDescriptor("b", int.class), C.class.getDeclaredMethod("b", int.class)),
-            T2.of(methodDescriptor("x"), C.class.getDeclaredMethod("x"))
+                 T2.of(methodDescriptor("d"), C.class.getDeclaredMethod("d")),
+                 T2.of(methodDescriptor("b", int.class), C.class.getDeclaredMethod("b", int.class)),
+                 T2.of(methodDescriptor("x"), C.class.getDeclaredMethod("x"))
         )
     );
 
     assertEquals(
         fields(C.class),
         Maps.of(T2.of("e", A.class.getDeclaredField("e")),
-            T2.of("y", B.class.getDeclaredField("y")),
-            T2.of("f", C.class.getDeclaredField("f")),
-            T2.of("g", C.class.getDeclaredField("g")),
-            T2.of("h", C.class.getDeclaredField("h")),
-            T2.of("i", C.class.getDeclaredField("i")),
-            T2.of("j", C.class.getDeclaredField("j")))
+                T2.of("y", B.class.getDeclaredField("y")),
+                T2.of("f", C.class.getDeclaredField("f")),
+                T2.of("g", C.class.getDeclaredField("g")),
+                T2.of("h", C.class.getDeclaredField("h")),
+                T2.of("i", C.class.getDeclaredField("i")),
+                T2.of("j", C.class.getDeclaredField("j")))
     );
 
     assertEquals(

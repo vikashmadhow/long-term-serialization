@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
 package ma.vi.serialization;
@@ -87,35 +87,35 @@ public class YamlSerializerTest {
     YamlSerializer ser = YamlSerializerBuilder.newBuilder().build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-        "obj_ref_a:\n" +
-            "   class: ma.vi.serialization.MapperTest$A\n" +
-            "   a: \"Test\"\n" +
-            "   b: \"10\"\n"
+                 "obj_ref_a:\n" +
+                     "   class: ma.vi.serialization.MapperTest$A\n" +
+                     "   a: \"Test\"\n" +
+                     "   b: \"10\"\n"
     );
 
     ser = YamlSerializerBuilder.newBuilder()
-        .indentSpaces(0)
-        .build();
+                               .indentSpaces(0)
+                               .build();
     String serialized2 = ser.toText(map);
     assertEquals(serialized2,
-        "obj_ref_a:\n" +
-            " class: ma.vi.serialization.MapperTest$A\n" +
-            " a: \"Test\"\n" +
-            " b: \"10\"\n"
+                 "obj_ref_a:\n" +
+                     " class: ma.vi.serialization.MapperTest$A\n" +
+                     " a: \"Test\"\n" +
+                     " b: \"10\"\n"
     );
 
     ser = new YamlSerializer();
-    for (String serialized : new String[]{serialized1, serialized2}) {
+    for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       String objectName = map.types.keySet().iterator().next();
       assertEquals(map.types.size(), 1);
       assertEquals(map.types.get(objectName), A.class.getName());
       assertEquals(map.objects.size(), 1);
       assertEquals(map.objects,
-          Maps.of(T2.of(
-              objectName,
-              Maps.of(T2.of("a", "Test"), T2.of("b", "10")))
-          ));
+                   Maps.of(T2.of(
+                       objectName,
+                       Maps.of(T2.of("a", "Test"), T2.of("b", "10")))
+                   ));
       assertEquals(map.singleRefObjects, Set.of(objectName));
     }
   }
@@ -139,32 +139,32 @@ public class YamlSerializerTest {
     YamlSerializer ser = YamlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-        "obj_ref_b:\n" +
-            "   class: ma.vi.serialization.MapperTest$B\n" +
-            "   a: \"-10\"\n" +
-            "   b: \"Another test\"\n" +
-            "   c: \"obj_ref_a\"\n" +
-            "obj_ref_a:\n" +
-            "   class: ma.vi.serialization.MapperTest$A\n" +
-            "   a: \"Test\"\n" +
-            "   b: \"10\"\n"
+                 "obj_ref_b:\n" +
+                     "   class: ma.vi.serialization.MapperTest$B\n" +
+                     "   a: \"-10\"\n" +
+                     "   b: \"Another test\"\n" +
+                     "   c: \"obj_ref_a\"\n" +
+                     "obj_ref_a:\n" +
+                     "   class: ma.vi.serialization.MapperTest$A\n" +
+                     "   a: \"Test\"\n" +
+                     "   b: \"10\"\n"
     );
 
     ser = YamlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
     assertEquals(serialized2,
-        "obj_ref_b:\n" +
-            "   class: ma.vi.serialization.MapperTest$B\n" +
-            "   a: \"-10\"\n" +
-            "   b: \"Another test\"\n" +
-            "   c:\n" +
-            "     class: ma.vi.serialization.MapperTest$A\n" +
-            "     a: \"Test\"\n" +
-            "     b: \"10\"\n"
+                 "obj_ref_b:\n" +
+                     "   class: ma.vi.serialization.MapperTest$B\n" +
+                     "   a: \"-10\"\n" +
+                     "   b: \"Another test\"\n" +
+                     "   c:\n" +
+                     "     class: ma.vi.serialization.MapperTest$A\n" +
+                     "     a: \"Test\"\n" +
+                     "     b: \"10\"\n"
     );
 
     ser = new YamlSerializer();
-    for (String serialized : new String[]{serialized1, serialized2}) {
+    for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(map.types.size(), 2);
 
@@ -203,9 +203,9 @@ public class YamlSerializerTest {
     YamlSerializer ser = YamlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-        "obj_ref_c:\n" +
-            "   class: ma.vi.serialization.MapperTest$C\n" +
-            "   c: \"obj_ref_c\"\n"
+                 "obj_ref_c:\n" +
+                     "   class: ma.vi.serialization.MapperTest$C\n" +
+                     "   c: \"obj_ref_c\"\n"
     );
 
     ser = YamlSerializerBuilder.newBuilder().build();
@@ -219,10 +219,10 @@ public class YamlSerializerTest {
     assertEquals(map.types.get(objectName), C.class.getName());
     assertEquals(map.objects.size(), 1);
     assertEquals(map.objects,
-        Maps.of(T2.of(
-            objectName,
-            Maps.of(T2.of("c", objectName)))
-        ));
+                 Maps.of(T2.of(
+                     objectName,
+                     Maps.of(T2.of("c", objectName)))
+                 ));
     assertEquals(map.singleRefObjects, emptySet());
   }
 
@@ -244,13 +244,13 @@ public class YamlSerializerTest {
     YamlSerializer ser = YamlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-        "obj_ref_d:\n" +
-            "   class: ma.vi.serialization.MapperTest$D\n" +
-            "   e: \"obj_ref_e\"\n" +
-            "obj_ref_e:\n" +
-            "   class: ma.vi.serialization.MapperTest$E\n" +
-            "   d: \"obj_ref_d\"\n" +
-            "   e: \"obj_ref_e\"\n"
+                 "obj_ref_d:\n" +
+                     "   class: ma.vi.serialization.MapperTest$D\n" +
+                     "   e: \"obj_ref_e\"\n" +
+                     "obj_ref_e:\n" +
+                     "   class: ma.vi.serialization.MapperTest$E\n" +
+                     "   d: \"obj_ref_d\"\n" +
+                     "   e: \"obj_ref_e\"\n"
     );
 
     ser = YamlSerializerBuilder.newBuilder().build();
@@ -310,9 +310,9 @@ public class YamlSerializerTest {
     ser = YamlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     serialized = ser.toText(map);
     assertEquals(serialized,
-        "obj_ref_f:\n" +
-            "   class: ma.vi.serialization.MapperTest$F\n" +
-            "   f: \"a\"\n"
+                 "obj_ref_f:\n" +
+                     "   class: ma.vi.serialization.MapperTest$F\n" +
+                     "   f: \"a\"\n"
     );
     map = ser.toMap(serialized);
     String objectName = map.types.keySet().iterator().next();
@@ -320,10 +320,10 @@ public class YamlSerializerTest {
     assertEquals(map.types.get(objectName), F.class.getName());
     assertEquals(map.objects.size(), 1);
     assertEquals(map.objects,
-        Maps.of(T2.of(
-            objectName,
-            Maps.of(T2.of("f", "a")))
-        ));
+                 Maps.of(T2.of(
+                     objectName,
+                     Maps.of(T2.of("f", "a")))
+                 ));
     assertEquals(map.singleRefObjects, Set.of(objectName));
 
     // And so does other literals
@@ -331,9 +331,9 @@ public class YamlSerializerTest {
     ser = YamlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     serialized = ser.toText(map);
     assertEquals(serialized,
-        "obj_ref_integer:\n" +
-            "   class: java.lang.Integer\n" +
-            "   integer: \"42\"\n"
+                 "obj_ref_integer:\n" +
+                     "   class: java.lang.Integer\n" +
+                     "   integer: \"42\"\n"
     );
     map = ser.toMap(serialized);
     objectName = map.types.keySet().iterator().next();
@@ -341,10 +341,10 @@ public class YamlSerializerTest {
     assertEquals(map.types.get(objectName), Integer.class.getName());
     assertEquals(map.objects.size(), 1);
     assertEquals(map.objects,
-        Maps.of(T2.of(
-            objectName,
-            Maps.of(T2.of("integer", "42")))
-        ));
+                 Maps.of(T2.of(
+                     objectName,
+                     Maps.of(T2.of("integer", "42")))
+                 ));
     assertEquals(map.singleRefObjects, Set.of(objectName));
 
     // Arrays are also literals
@@ -352,9 +352,9 @@ public class YamlSerializerTest {
     ser = YamlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     serialized = ser.toText(map);
     assertEquals(serialized,
-        "obj_ref_int:\n" +
-            "   class: int[3]\n" +
-            "   int: \"[1,2,3]\"\n"
+                 "obj_ref_int:\n" +
+                     "   class: int[3]\n" +
+                     "   int: \"[1,2,3]\"\n"
     );
     map = ser.toMap(serialized);
     objectName = map.types.keySet().iterator().next();
@@ -362,19 +362,19 @@ public class YamlSerializerTest {
     assertEquals(map.types.get(objectName), int.class.getName() + "[3]");
     assertEquals(map.objects.size(), 1);
     assertEquals(map.objects,
-        Maps.of(T2.of(
-            objectName,
-            Maps.of(T2.of("int", "[1,2,3]")))
-        ));
+                 Maps.of(T2.of(
+                     objectName,
+                     Maps.of(T2.of("int", "[1,2,3]")))
+                 ));
     assertEquals(map.singleRefObjects, Set.of(objectName));
 
     map = Mapper.toMap(i);
     ser = YamlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     serialized = ser.toText(map);
     assertEquals(serialized,
-        "obj_ref_string:\n" +
-            "   class: java.lang.String[2][]\n" +
-            "   string: \"[[a],[c,d]]\"\n"
+                 "obj_ref_string:\n" +
+                     "   class: java.lang.String[2][]\n" +
+                     "   string: \"[[a],[c,d]]\"\n"
     );
     map = ser.toMap(serialized);
     objectName = map.types.keySet().iterator().next();
@@ -382,10 +382,10 @@ public class YamlSerializerTest {
     assertEquals(map.types.get(objectName), String.class.getName() + "[2][]");
     assertEquals(map.objects.size(), 1);
     assertEquals(map.objects,
-        Maps.of(T2.of(
-            objectName,
-            Maps.of(T2.of("string", "[[a],[c,d]]")))
-        ));
+                 Maps.of(T2.of(
+                     objectName,
+                     Maps.of(T2.of("string", "[[a],[c,d]]")))
+                 ));
     assertEquals(map.singleRefObjects, Set.of(objectName));
   }
 
@@ -401,10 +401,10 @@ public class YamlSerializerTest {
     YamlSerializer ser = YamlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-        "obj_ref_g:\n" +
-            "   class: ma.vi.serialization.MapperTest$G\n" +
-            "   a: \"b\"\n" +
-            "   b: \"[a,a,b,c]\"\n"
+                 "obj_ref_g:\n" +
+                     "   class: ma.vi.serialization.MapperTest$G\n" +
+                     "   a: \"b\"\n" +
+                     "   b: \"[a,a,b,c]\"\n"
     );
 
     ser = YamlSerializerBuilder.newBuilder().build();
@@ -417,10 +417,10 @@ public class YamlSerializerTest {
     assertEquals(map.types.get(objectName), G.class.getName());
     assertEquals(map.objects.size(), 1);
     assertEquals(map.objects,
-        Maps.of(T2.of(
-            objectName,
-            Maps.of(T2.of("a", "b"), T2.of("b", "[a,a,b,c]")))
-        ));
+                 Maps.of(T2.of(
+                     objectName,
+                     Maps.of(T2.of("a", "b"), T2.of("b", "[a,a,b,c]")))
+                 ));
     assertEquals(map.singleRefObjects, Set.of(objectName));
   }
 
@@ -434,7 +434,7 @@ public class YamlSerializerTest {
     String serialized2 = ser.toText(map);
 
     ser = new YamlSerializer();
-    for (String serialized : new String[]{serialized1, serialized2}) {
+    for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(map.types.size(), 4);
       Map<String, String> typeToName = Maps.invert(map.types);
@@ -483,7 +483,7 @@ public class YamlSerializerTest {
     String serialized2 = ser.toText(map);
 
     ser = new YamlSerializer();
-    for (String serialized : new String[]{serialized1, serialized2}) {
+    for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(map.types.size(), 3);
 
@@ -505,8 +505,8 @@ public class YamlSerializerTest {
           T2.of(
               objectName[0],
               Maps.of(T2.of("a", "[1,2,3]"),
-                  T2.of("b", "[[],[," + NULL_LITERAL + ",\\[],[\\],\\,,\\[\\,\\]]]"),
-                  T2.of("c", objectName[1]))
+                      T2.of("b", "[[],[," + NULL_LITERAL + ",\\[],[\\],\\,,\\[\\,\\]]]"),
+                      T2.of("c", objectName[1]))
           ),
           T2.of(
               objectName[1],
@@ -531,7 +531,7 @@ public class YamlSerializerTest {
     String serialized2 = ser.toText(map);
 
     ser = new YamlSerializer();
-    for (String serialized : new String[]{serialized1, serialized2}) {
+    for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(Mapper.fromMap(map), obj);
     }
@@ -550,7 +550,7 @@ public class YamlSerializerTest {
     String serialized2 = ser.toText(map);
 
     ser = new YamlSerializer();
-    for (String serialized : new String[]{serialized1, serialized2}) {
+    for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(Mapper.fromMap(map), listOfObjects);
     }
@@ -569,7 +569,7 @@ public class YamlSerializerTest {
     String serialized2 = ser.toText(map);
 
     ser = new YamlSerializer();
-    for (String serialized : new String[]{serialized1, serialized2}) {
+    for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(Mapper.fromMap(map), obj1);
     }
@@ -590,7 +590,7 @@ public class YamlSerializerTest {
     String serialized2 = ser.toText(map);
 
     ser = new YamlSerializer();
-    for (String serialized : new String[]{serialized1, serialized2}) {
+    for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(Mapper.fromMap(map), obj2);
     }
@@ -613,7 +613,7 @@ public class YamlSerializerTest {
     Object reconstructed = Mapper.fromMap(fromText);
     assertEquals(reconstructed, obj);
 
-    for (YamlSerializer ser : new YamlSerializer[]{YamlSerializerBuilder.newBuilder().build(),
+    for (YamlSerializer ser: new YamlSerializer[]{YamlSerializerBuilder.newBuilder().build(),
         YamlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build()}) {
       // heat up
       int reps = 3;
