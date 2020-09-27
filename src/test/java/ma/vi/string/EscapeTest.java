@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
 package ma.vi.string;
@@ -15,24 +15,24 @@ import static org.junit.Assert.*;
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
 public class EscapeTest {
-  private String toEscape = "[,]\\";
   private Escape esc;
 
   @Before
   public void init() {
+    String toEscape = "[,]\\";
     esc = new Escape(toEscape);
   }
 
   @Test
   public void escape() throws Exception {
-    assertEquals(esc.escape(null), null);
+    assertNull(esc.escape(null));
     assertEquals(esc.escape(""), "");
     assertEquals(esc.escape(" [ ] , \\ "), " \\[ \\] \\, \\\\ ");
   }
 
   @Test
   public void remap() throws Exception {
-    assertEquals(esc.map(null), null);
+    assertNull(esc.map(null));
     assertEquals(esc.map(""), "");
     assertEquals(esc.map(" \\[ \\] \\, \\\\ "), " \ue000 \ue002 \ue001 \ue003 ");
     assertEquals(esc.map(" \\[ \\] \\, \\\\ \\"), " \ue000 \ue002 \ue001 \ue003 \\");
@@ -41,7 +41,7 @@ public class EscapeTest {
 
   @Test
   public void unescape() throws Exception {
-    assertEquals(esc.demap(null), null);
+    assertNull(esc.demap(null));
     assertEquals(esc.demap(""), "");
     assertEquals(esc.demap(" \ue000 \ue002 \ue001 \ue003 "), " [ ] , \\ ");
   }

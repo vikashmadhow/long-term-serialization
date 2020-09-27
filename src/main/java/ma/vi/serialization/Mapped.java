@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
 package ma.vi.serialization;
@@ -7,8 +7,9 @@ package ma.vi.serialization;
 import java.util.*;
 
 /**
- * This is the structure produced by the {@link Mapper} and contains
- * the types and objects of the mapped object graph.
+ * This is the representation-independent structure of an object-graph
+ * produced by the {@link Mapper} and contains the types and objects of
+ * the mapped object graph.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */

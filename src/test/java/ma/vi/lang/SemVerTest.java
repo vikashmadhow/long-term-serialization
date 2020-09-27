@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
 package ma.vi.lang;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static ma.vi.lang.SemVer.version;
 import static ma.vi.lang.SemVer.valid;
+import static ma.vi.lang.SemVer.version;
+import static org.junit.Assert.*;
 
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)

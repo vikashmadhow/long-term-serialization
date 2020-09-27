@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
 package ma.vi.xml;
@@ -13,9 +13,9 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static ma.vi.xml.Fragment.Type.*;
 import static java.util.Collections.emptyMap;
+import static ma.vi.xml.Fragment.Type.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
@@ -77,7 +77,7 @@ public class XmlReaderTest {
 
   @Test
   public void textXml1() {
-    List<Fragment> elements = Lists.newArrayList((Iterator<Fragment>) new XmlReader(new StringReader(xml1)));
+    List<Fragment> elements = Lists.newArrayList((Iterator<Fragment>)new XmlReader(new StringReader(xml1)));
     assertEquals(elements, Lists.newArrayList(
         new Fragment(T_START_ELEMENT, "a", Maps.of(T2.of("a", "b"), T2.of("c", "d"))),
         new Fragment(T_TEXT, "test", emptyMap()),
@@ -157,7 +157,7 @@ public class XmlReaderTest {
         "</a>";
        */
 
-    List<Fragment> elements = Lists.newArrayList((Iterator<Fragment>) new XmlReader(new StringReader(xml2)));
+    List<Fragment> elements = Lists.newArrayList((Iterator<Fragment>)new XmlReader(new StringReader(xml2)));
     assertEquals(elements, Lists.newArrayList(
         new Fragment(T_START_ELEMENT, "a", Maps.of(T2.of("a", "b"), T2.of("c", "d"))),
         new Fragment(T_TEXT, "\ntest\n  suffix\n  ", emptyMap()),
@@ -192,7 +192,10 @@ public class XmlReaderTest {
        */
 
     List<Fragment> elements = Lists.newArrayList((Iterator<Fragment>)
-        XmlReaderBuilder.newBuilder(new StringReader(xml2)).coalesceText(false).discardComments(false).build());
+                                                     XmlReaderBuilder.newBuilder(new StringReader(xml2))
+                                                                     .coalesceText(false)
+                                                                     .discardComments(false)
+                                                                     .build());
     assertEquals(elements, Lists.newArrayList(
         new Fragment(T_START_ELEMENT, "a", Maps.of(T2.of("a", "b"), T2.of("c", "d"))),
         new Fragment(T_TEXT, "\ntest\n ", emptyMap()),
@@ -217,7 +220,7 @@ public class XmlReaderTest {
 
   @Test
   public void testCharts() {
-    for (Fragment de : XmlReaderBuilder.newBuilder(new StringReader(charts)).build()) {
+    for (Fragment de: XmlReaderBuilder.newBuilder(new StringReader(charts)).build()) {
       System.out.println(de);
     }
   }

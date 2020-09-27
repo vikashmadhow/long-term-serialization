@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
 /**
- * Long-term serialisation functions.
+ * Long-term serialization library.
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */

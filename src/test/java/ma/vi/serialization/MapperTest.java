@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
 package ma.vi.serialization;
@@ -12,9 +12,9 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static java.util.stream.Collectors.toMap;
-import static java.util.Map.Entry;
 import static java.util.Collections.*;
+import static java.util.Map.Entry;
+import static java.util.stream.Collectors.toMap;
 import static ma.vi.lang.Literal.NULL_LITERAL;
 import static org.junit.Assert.*;
 
@@ -31,8 +31,7 @@ public class MapperTest {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
 
-      A a1 = (A) o;
-
+      A a1 = (A)o;
       return b == a1.b && a.equals(a1.a);
     }
 
@@ -62,7 +61,7 @@ public class MapperTest {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
 
-      B b1 = (B) o;
+      B b1 = (B)o;
 
       if (a != b1.a) return false;
       if (!Objects.equals(b, b1.b)) return false;
@@ -110,7 +109,7 @@ public class MapperTest {
     public boolean equals(Object o) {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
-      G g = (G) o;
+      G g = (G)o;
       return a == g.a && Arrays.equals(b, g.b);
     }
 
@@ -140,7 +139,7 @@ public class MapperTest {
       if (this == o) return true;
       if (o == null || getClass() != o.getClass()) return false;
 
-      K k = (K) o;
+      K k = (K)o;
 
       if (!Arrays.equals(a, k.a)) return false;
       if (!Arrays.deepEquals(b, k.b)) return false;
@@ -231,7 +230,7 @@ public class MapperTest {
     assertEquals(map.types.get(objectName), A.class.getName());
     assertEquals(map.objects.size(), 1);
     assertEquals(map.objects,
-        Map.of(objectName, Map.of("a", "Test","b", "10")));
+                 Map.of(objectName, Map.of("a", "Test", "b", "10")));
     assertEquals(map.singleRefObjects, singleton(objectName));
   }
 
@@ -288,7 +287,7 @@ public class MapperTest {
     assertEquals(map.types.get(objectName), C.class.getName());
     assertEquals(map.objects.size(), 1);
     assertEquals(map.objects,
-        Map.of(objectName, Map.of("c", objectName)));
+                 Map.of(objectName, Map.of("c", objectName)));
     assertEquals(map.singleRefObjects, emptySet());
   }
 
@@ -319,11 +318,11 @@ public class MapperTest {
 
     assertEquals(map.objects.size(), 2);
     assertEquals(map.objects, Map.of(
-          objectName[0],
-          Map.of("e", objectName[1]),
-          objectName[1],
-          Map.of("d", objectName[0], "e", objectName[1])
-       )
+        objectName[0],
+        Map.of("e", objectName[1]),
+        objectName[1],
+        Map.of("d", objectName[0], "e", objectName[1])
+                 )
     );
     assertEquals(map.singleRefObjects, emptySet());
   }
@@ -397,8 +396,8 @@ public class MapperTest {
     assertEquals(map.types.get(objectName), G.class.getName());
     assertEquals(map.objects.size(), 1);
     assertEquals(map.objects,
-        Map.of(objectName,
-               Map.of("a", "b", "b", "[a,a,b,c]")));
+                 Map.of(objectName,
+                        Map.of("a", "b", "b", "[a,a,b,c]")));
     assertEquals(map.singleRefObjects, Set.of(objectName));
   }
 
@@ -423,16 +422,16 @@ public class MapperTest {
 
     assertEquals(map.objects.size(), 4);
     assertEquals(map.objects,
-         Map.of(
-            objectName[0],
-            Map.of("i0", objectName[1], "i1", objectName[2]),
-            objectName[1],
-            Map.of("i0", objectName[3]),
-            objectName[2],
-            Map.of("i0", objectName[3],"i1", objectName[3]),
-            objectName[3],
-            Map.of("a", "b","b", "[a,a,b,c]")
-         )
+                 Map.of(
+                     objectName[0],
+                     Map.of("i0", objectName[1], "i1", objectName[2]),
+                     objectName[1],
+                     Map.of("i0", objectName[3]),
+                     objectName[2],
+                     Map.of("i0", objectName[3], "i1", objectName[3]),
+                     objectName[3],
+                     Map.of("a", "b", "b", "[a,a,b,c]")
+                 )
     );
     assertEquals(map.singleRefObjects, Set.of(objectName[0], objectName[1], objectName[2]));
   }
@@ -457,14 +456,14 @@ public class MapperTest {
 
     assertEquals(map.objects.size(), 3);
     assertEquals(map.objects, Map.of(
-      objectName[0],
-      Map.of("a", "[1,2,3]",
-             "b", "[[],[," + NULL_LITERAL + ",\\[],[\\],\\,,\\[\\,\\]]]",
-             "c", objectName[1]),
-      objectName[1],
-      Map.of("i0", objectName[2], "i1", objectName[2]),
-      objectName[2],
-      Map.of("a", "b", "b", "[a,a,b,c]")));
+        objectName[0],
+        Map.of("a", "[1,2,3]",
+               "b", "[[],[," + NULL_LITERAL + ",\\[],[\\],\\,,\\[\\,\\]]]",
+               "c", objectName[1]),
+        objectName[1],
+        Map.of("i0", objectName[2], "i1", objectName[2]),
+        objectName[2],
+        Map.of("a", "b", "b", "[a,a,b,c]")));
     assertEquals(map.singleRefObjects, Set.of(objectName[0], objectName[1]));
   }
 
@@ -483,14 +482,14 @@ public class MapperTest {
   @Test
   public void mapDemapC() throws Exception {
     Mapped map = Mapper.toMap(c);
-    C c_ = (C) Mapper.fromMap(map);
+    C c_ = (C)Mapper.fromMap(map);
     assertSame(c_, c_.c);
   }
 
   @Test
   public void mapDemapD() throws Exception {
     Mapped map = Mapper.toMap(d);
-    D d_ = (D) Mapper.fromMap(map);
+    D d_ = (D)Mapper.fromMap(map);
     assertSame(d_, d_.e.d);
     assertSame(d_.e, d_.e.e);
   }
@@ -525,10 +524,10 @@ public class MapperTest {
 
     // Arrays are also literals
     map = Mapper.toMap(h);
-    assertArrayEquals((int[]) Mapper.fromMap(map), h);
+    assertArrayEquals((int[])Mapper.fromMap(map), h);
 
     map = Mapper.toMap(i);
-    assertArrayEquals((String[][]) Mapper.fromMap(map), i);
+    assertArrayEquals((String[][])Mapper.fromMap(map), i);
   }
 
 

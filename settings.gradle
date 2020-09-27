@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2020 2017 Vikash Madhow
+ * Copyright (c) 2016 Vikash Madhow
  */
 
-rootProject.name = 'serializer'
+rootProject.name = 'long-term-serialization'
 
