@@ -36,7 +36,7 @@ public class JsonSerializerBuilder extends AbstractSerializerBuilder<JsonSeriali
     json.inlineSingleRefObjects = inlineSingleRefObjects;
     return json;
   }
-0
+
   private JsonSerializerBuilder() {
   }
 }
