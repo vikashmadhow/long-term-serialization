@@ -9,7 +9,7 @@ package ma.vi.serialization;
  * overriding the latter's defaults. Usage scenario:
  *
  * <pre>
- *  JsonSerializer xml =
+ *  JsonSerializer json =
  *      JsonSerializerBuilder.newBuilder()
  *          .indentSpaces(4)                // instead of 2
  *          .lineSeparator("\n")            // instead of the system's default one

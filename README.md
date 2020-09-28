@@ -20,3 +20,22 @@ appropriate implementation of `Serializer` such as `JsonSerializer` or `YamlSeri
     graph   <----------------- structure  <--------------------- representation
               Mapper.fromMap                Serializer.toMap
     
+Simply call `Mapper.toMap` on an object to get the `Mapped` instance representation of the object
+graph of which the object is part of. Then use one of the serializer builders such as the `JsonSerializerBuilder`
+to configure and get an instance of a serializer. E.g:
+
+     JsonSerializer json =
+        JsonSerializerBuilder.newBuilder()
+              .indentSpaces(4)                // instead of 2
+              .lineSeparator("\n")            // instead of the system's default
+              .inlineSingleRefObjects(false)  // do not inline singly-referenced objects
+              .build();
+ 
+ Or simply: `JsonSerializer json = JsonSerializerBuilder.newBuilder().build()` to use defaults.
+ 
+ Call the `toText` method of the serializer passing the `Mapped` instance to get the serialized
+ representation of the object graph: `String ser = json.toText(mapped)`
+ 
+ Call the `toMap` method of the serializer passing in the serialized text to get back the `Mapped`
+ instance which can then be passed to the `fromMap` method of `Mapper` to get back the object
+ graph.
