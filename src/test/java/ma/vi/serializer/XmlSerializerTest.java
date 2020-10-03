@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Vikash Madhow
  */
 
-package ma.vi.serialization;
+package ma.vi.serializer;
 
 import ma.vi.collections.Maps;
 import ma.vi.tuple.T2;
@@ -12,17 +12,18 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static java.util.Collections.*;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toMap;
 import static ma.vi.lang.Literal.NULL_LITERAL;
-import static ma.vi.serialization.Mapper.OBJ_NAME_PREFIX;
-import static ma.vi.serialization.MapperTest.*;
+import static ma.vi.serializer.Mapper.OBJ_NAME_PREFIX;
+import static ma.vi.serializer.MapperTest.*;
 import static org.junit.Assert.assertEquals;
 
 /**
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
-public class JsonSerializerTest {
+public class XmlSerializerTest {
   private A a;
   private B b;
   private C c;
@@ -35,7 +36,7 @@ public class JsonSerializerTest {
   private G[][] j;
   private K k;
 
-  private String ls = "\n";
+  private final String ls = "\n";
 
   @Before
   public void init() {
@@ -85,34 +86,35 @@ public class JsonSerializerTest {
   @Test
   public void mapA() throws Exception {
     Mapped map = Mapper.toMap(a);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-                 "{" + ls +
-                     "  \"" + OBJ_NAME_PREFIX + "a\": {" + ls +
-                     "    \"class\": \"" + A.class.getName() + "\"," + ls +
-                     "    \"a\": \"Test\"," + ls +
-                     "    \"b\": \"10\"" + ls +
-                     "  }" + ls +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "a type='" + A.class.getName() + "'>" + ls +
+                     "    <a>Test</a>" + ls +
+                     "    <b>10</b>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "a>" + ls +
+                     "</root>"
     );
 
-    ser = JsonSerializerBuilder.newBuilder()
-                               .indentSpaces(0)
-                               .lineSeparator("")
-                               .build();
+    ser = XmlSerializerBuilder.newBuilder()
+                              .indentSpaces(0)
+                              .rootElement("r")
+                              .lineSeparator("")
+                              .build();
     String serialized2 = ser.toText(map);
     assertEquals(serialized2,
-                 "{\"" +
-                     OBJ_NAME_PREFIX + "a\": {" +
-                     "\"class\": \"" + A.class.getName() + "\"," +
-                     "\"a\": \"Test\"," +
-                     "\"b\": \"10\"" +
-                     "}" +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" +
+                     "<r>" +
+                     "<" + OBJ_NAME_PREFIX + "a type='" + A.class.getName() + "'>" +
+                     "<a>Test</a>" +
+                     "<b>10</b>" +
+                     "</" + OBJ_NAME_PREFIX + "a>" +
+                     "</r>"
     );
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       String objectName = map.types.keySet().iterator().next();
@@ -121,7 +123,7 @@ public class JsonSerializerTest {
       assertEquals(map.objects.size(), 1);
       assertEquals(map.objects,
                    Map.of(objectName, Map.of("a", "Test", "b", "10")));
-      assertEquals(map.singleRefObjects, singleton(objectName));
+      assertEquals(map.singleRefObjects, Set.of(objectName));
     }
   }
 
@@ -141,42 +143,40 @@ public class JsonSerializerTest {
   @Test
   public void mapB() throws Exception {
     Mapped map = Mapper.toMap(b);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-                 "{" + ls +
-                     "  \"" + OBJ_NAME_PREFIX + "b\": {" + ls +
-                     "    \"class\": \"" + B.class.getName() + "\"," + ls +
-                     "    \"a\": \"-10\"," + ls +
-                     "    \"b\": \"Another test\"," + ls +
-                     "    \"c\": \"" + OBJ_NAME_PREFIX + "a\"" + ls +
-                     "  }," + ls +
-                     "  \"" + OBJ_NAME_PREFIX + "a\": {" + ls +
-                     "    \"class\": \"" + A.class.getName() + "\"," + ls +
-                     "    \"a\": \"Test\"," + ls +
-                     "    \"b\": \"10\"" + ls +
-                     "  }" + ls +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "b type='" + B.class.getName() + "'>" + ls +
+                     "    <a>-10</a>" + ls +
+                     "    <b>Another test</b>" + ls +
+                     "    <c>" + OBJ_NAME_PREFIX + "a</c>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "b>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "a type='" + A.class.getName() + "'>" + ls +
+                     "    <a>Test</a>" + ls +
+                     "    <b>10</b>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "a>" + ls +
+                     "</root>"
     );
 
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
     assertEquals(serialized2,
-                 "{\n" +
-                     "  \"obj_ref_b\": {\n" +
-                     "    \"class\": \"ma.vi.serialization.MapperTest$B\",\n" +
-                     "    \"a\": \"-10\",\n" +
-                     "    \"b\": \"Another test\",\n" +
-                     "    \"c\": {\n" +
-                     "      \"class\": \"ma.vi.serialization.MapperTest$A\",\n" +
-                     "      \"a\": \"Test\",\n" +
-                     "      \"b\": \"10\"\n" +
-                     "    }\n" +
-                     "  }\n" +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "b type='" + B.class.getName() + "'>" + ls +
+                     "    <a>-10</a>" + ls +
+                     "    <b>Another test</b>" + ls +
+                     "    <c type='" + A.class.getName() + "'>" + ls +
+                     "      <a>Test</a>" + ls +
+                     "      <b>10</b>" + ls +
+                     "    </c>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "b>" + ls +
+                     "</root>"
     );
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(map.types.size(), 2);
@@ -186,9 +186,10 @@ public class JsonSerializerTest {
                                                 .collect(toMap(Map.Entry::getValue, Map.Entry::getKey));
       assertEquals(typeToName.keySet(), Set.of(A.class.getName(), B.class.getName()));
 
-      String[] objectName = new String[]{
+      String[] objectName = new String[] {
           typeToName.get(B.class.getName()),
-          typeToName.get(A.class.getName())};
+          typeToName.get(A.class.getName())
+      };
 
       assertEquals(map.objects.size(), 2);
       assertEquals(map.objects, Map.of(
@@ -211,29 +212,28 @@ public class JsonSerializerTest {
   @Test
   public void mapC() throws Exception {
     Mapped map = Mapper.toMap(c);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-                 "{\n" +
-                     "  \"obj_ref_c\": {\n" +
-                     "    \"class\": \"ma.vi.serialization.MapperTest$C\",\n" +
-                     "    \"c\": \"obj_ref_c\"\n" +
-                     "  }\n" +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "c type='" + C.class.getName() + "'>" + ls +
+                     "    <c>" + OBJ_NAME_PREFIX + "c</c>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "c>" + ls +
+                     "</root>"
     );
 
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
     assertEquals(serialized2, serialized1);
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     map = ser.toMap(serialized1);
     String objectName = map.types.keySet().iterator().next();
     assertEquals(map.types.size(), 1);
     assertEquals(map.types.get(objectName), C.class.getName());
     assertEquals(map.objects.size(), 1);
-    assertEquals(map.objects,
-                 Map.of(objectName, Map.of("c", objectName)));
+    assertEquals(map.objects, Map.of(objectName, Map.of("c", objectName)));
     assertEquals(map.singleRefObjects, emptySet());
   }
 
@@ -252,27 +252,26 @@ public class JsonSerializerTest {
   @Test
   public void mapD() throws Exception {
     Mapped map = Mapper.toMap(d);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-                 "{\n" +
-                     "  \"obj_ref_d\": {\n" +
-                     "    \"class\": \"ma.vi.serialization.MapperTest$D\",\n" +
-                     "    \"e\": \"obj_ref_e\"\n" +
-                     "  },\n" +
-                     "  \"obj_ref_e\": {\n" +
-                     "    \"class\": \"ma.vi.serialization.MapperTest$E\",\n" +
-                     "    \"d\": \"obj_ref_d\",\n" +
-                     "    \"e\": \"obj_ref_e\"\n" +
-                     "  }\n" +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "d type='" + D.class.getName() + "'>" + ls +
+                     "    <e>" + OBJ_NAME_PREFIX + "e</e>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "d>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "e type='" + E.class.getName() + "'>" + ls +
+                     "    <d>" + OBJ_NAME_PREFIX + "d</d>" + ls +
+                     "    <e>" + OBJ_NAME_PREFIX + "e</e>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "e>" + ls +
+                     "</root>"
     );
 
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
     assertEquals(serialized2, serialized1);
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     map = ser.toMap(serialized1);
     assertEquals(map.types.size(), 2);
 
@@ -309,10 +308,11 @@ public class JsonSerializerTest {
   public void mapSpecial() throws Exception {
     // nulls map to the empty map
     Mapped map = Mapper.toMap(null);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized = ser.toText(map);
     assertEquals(serialized,
-                 "{" + ls + "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls + "</root>"
     );
     map = ser.toMap(serialized);
     assertEquals(map.types, emptyMap());
@@ -321,35 +321,36 @@ public class JsonSerializerTest {
 
     // enum maps to their names
     map = Mapper.toMap(f);
-    ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     serialized = ser.toText(map);
     assertEquals(serialized,
-                 "{\n" +
-                     "  \"obj_ref_f\": {\n" +
-                     "    \"class\": \"ma.vi.serialization.MapperTest$F\",\n" +
-                     "    \"f\": \"a\"\n" +
-                     "  }\n" +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "f type='" + F.class.getName() + "'>" + ls +
+                     "    <f>a</f>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "f>" + ls +
+                     "</root>"
     );
     map = ser.toMap(serialized);
     String objectName = map.types.keySet().iterator().next();
     assertEquals(map.types.size(), 1);
     assertEquals(map.types.get(objectName), F.class.getName());
     assertEquals(map.objects.size(), 1);
-    assertEquals(map.objects, Map.of(objectName, Map.of("f", "a")));
+    assertEquals(map.objects,
+                 Map.of(objectName, Map.of("f", "a")));
     assertEquals(map.singleRefObjects, Set.of(objectName));
 
     // And so does other literals
     map = Mapper.toMap(42);
-    ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     serialized = ser.toText(map);
     assertEquals(serialized,
-                 "{\n" +
-                     "  \"obj_ref_integer\": {\n" +
-                     "    \"class\": \"java.lang.Integer\",\n" +
-                     "    \"integer\": \"42\"\n" +
-                     "  }\n" +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "integer type='" + Integer.class.getName() + "'>" + ls +
+                     "    <integer>42</integer>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "integer>" + ls +
+                     "</root>"
     );
     map = ser.toMap(serialized);
     objectName = map.types.keySet().iterator().next();
@@ -361,15 +362,15 @@ public class JsonSerializerTest {
 
     // Arrays are also literals
     map = Mapper.toMap(h);
-    ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     serialized = ser.toText(map);
     assertEquals(serialized,
-                 "{\n" +
-                     "  \"obj_ref_int\": {\n" +
-                     "    \"class\": \"int[3]\",\n" +
-                     "    \"int\": \"[1,2,3]\"\n" +
-                     "  }\n" +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "int type='" + int.class.getName() + "[3]'>" + ls +
+                     "    <int>[1,2,3]</int>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "int>" + ls +
+                     "</root>"
     );
     map = ser.toMap(serialized);
     objectName = map.types.keySet().iterator().next();
@@ -380,22 +381,23 @@ public class JsonSerializerTest {
     assertEquals(map.singleRefObjects, Set.of(objectName));
 
     map = Mapper.toMap(i);
-    ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     serialized = ser.toText(map);
     assertEquals(serialized,
-                 "{\n" +
-                     "  \"obj_ref_string\": {\n" +
-                     "    \"class\": \"java.lang.String[2][]\",\n" +
-                     "    \"string\": \"[[a],[c,d]]\"\n" +
-                     "  }\n" +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "string type='" + String.class.getName() + "[2][]'>" + ls +
+                     "    <string>[[a],[c,d]]</string>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "string>" + ls +
+                     "</root>"
     );
     map = ser.toMap(serialized);
     objectName = map.types.keySet().iterator().next();
     assertEquals(map.types.size(), 1);
     assertEquals(map.types.get(objectName), String.class.getName() + "[2][]");
     assertEquals(map.objects.size(), 1);
-    assertEquals(map.objects, Map.of(objectName, Map.of("string", "[[a],[c,d]]")));
+    assertEquals(map.objects,
+                 Map.of(objectName, Map.of("string", "[[a],[c,d]]")));
     assertEquals(map.singleRefObjects, Set.of(objectName));
   }
 
@@ -408,19 +410,19 @@ public class JsonSerializerTest {
   @Test
   public void mapG() throws Exception {
     Mapped map = Mapper.toMap(g);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
     assertEquals(serialized1,
-                 "{\n" +
-                     "  \"obj_ref_g\": {\n" +
-                     "    \"class\": \"ma.vi.serialization.MapperTest$G\",\n" +
-                     "    \"a\": \"b\",\n" +
-                     "    \"b\": \"[a,a,b,c]\"\n" +
-                     "  }\n" +
-                     "}"
+                 "<?xml version='1.0' encoding='UTF-8'?>" + ls +
+                     "<root>" + ls +
+                     "  <" + OBJ_NAME_PREFIX + "g type='" + G.class.getName() + "'>" + ls +
+                     "    <a>b</a>" + ls +
+                     "    <b>[a,a,b,c]</b>" + ls +
+                     "  </" + OBJ_NAME_PREFIX + "g>" + ls +
+                     "</root>"
     );
 
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
     assertEquals(serialized1, serialized2);
 
@@ -429,20 +431,21 @@ public class JsonSerializerTest {
     assertEquals(map.types.size(), 1);
     assertEquals(map.types.get(objectName), G.class.getName());
     assertEquals(map.objects.size(), 1);
-    assertEquals(map.objects, Map.of(objectName, Map.of("a", "b", "b", "[a,a,b,c]")));
+    assertEquals(map.objects,
+                 Map.of(objectName, Map.of("a", "b", "b", "[a,a,b,c]")));
     assertEquals(map.singleRefObjects, Set.of(objectName));
   }
 
   @Test
   public void mapJ() throws Exception {
     Mapped map = Mapper.toMap(j);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
 
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(map.types.size(), 4);
@@ -479,12 +482,12 @@ public class JsonSerializerTest {
   @Test
   public void mapK() throws Exception {
     Mapped map = Mapper.toMap(k);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(map.types.size(), 3);
@@ -522,12 +525,12 @@ public class JsonSerializerTest {
   public void mapList() throws Exception {
     List<String> obj = Arrays.asList("a", "b", "c", "d");
     Mapped map = Mapper.toMap(obj);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(Mapper.fromMap(map), obj);
@@ -541,12 +544,12 @@ public class JsonSerializerTest {
         T2.of("c", 3), T2.of("d", 4));
     Mapped map = Mapper.toMap(listOfObjects);
 
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(Mapper.fromMap(map), listOfObjects);
@@ -555,17 +558,17 @@ public class JsonSerializerTest {
 
   @Test
   public void mapMap() throws Exception {
-    Map<String, Integer> obj1 = Map.of(
-        "a", 1, "b", 2,
-        "c", 3, "d", 4);
+    Map<String, Integer> obj1 = Maps.of(
+        T2.of("a", 1), T2.of("b", 2),
+        T2.of("c", 3), T2.of("d", 4));
 
     Mapped map = Mapper.toMap(obj1);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(Mapper.fromMap(map), obj1);
@@ -576,17 +579,17 @@ public class JsonSerializerTest {
   @Test
   public void mapMap2() throws Exception {
     Date now = new Date(System.currentTimeMillis());
-    Map<T2<String, Integer>, Date> obj2 = Map.of(
-        T2.of("a", 1), now, T2.of("b", 2), now,
-        T2.of("c", 3), now, T2.of("d", 4), now);
+    Map<T2<String, Integer>, Date> obj2 = Maps.of(
+        T2.of(T2.of("a", 1), now), T2.of(T2.of("b", 2), now),
+        T2.of(T2.of("c", 3), now), T2.of(T2.of("d", 4), now));
 
     Mapped map = Mapper.toMap(obj2);
-    JsonSerializer ser = JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
+    XmlSerializer ser = XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build();
     String serialized1 = ser.toText(map);
-    ser = JsonSerializerBuilder.newBuilder().build();
+    ser = XmlSerializerBuilder.newBuilder().build();
     String serialized2 = ser.toText(map);
 
-    ser = new JsonSerializer();
+    ser = new XmlSerializer();
     for (String serialized: new String[]{serialized1, serialized2}) {
       map = ser.toMap(serialized);
       assertEquals(Mapper.fromMap(map), obj2);
@@ -604,14 +607,14 @@ public class JsonSerializerTest {
     }
 
     Mapped map = Mapper.toMap(obj);
-    JsonSerializer xs = JsonSerializerBuilder.newBuilder().build();
+    XmlSerializer xs = XmlSerializerBuilder.newBuilder().build();
     String objText = xs.toText(map);
     Mapped fromText = xs.toMap(objText);
     Object reconstructed = Mapper.fromMap(fromText);
     assertEquals(reconstructed, obj);
 
-    for (JsonSerializer ser: new JsonSerializer[]{JsonSerializerBuilder.newBuilder().build(),
-        JsonSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build()}) {
+    for (XmlSerializer ser: new XmlSerializer[]{XmlSerializerBuilder.newBuilder().build(),
+        XmlSerializerBuilder.newBuilder().inlineSingleRefObjects(false).build()}) {
       // heat up
       int reps = 3;
       System.out.println("Heating up...");

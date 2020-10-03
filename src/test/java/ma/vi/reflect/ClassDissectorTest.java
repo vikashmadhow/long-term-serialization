@@ -119,21 +119,18 @@ public class ClassDissectorTest {
   static {
     try {
       objectMethods = Maps.of(
-
-          T2.of(methodDescriptor("registerNatives"), Object.class.getDeclaredMethod("registerNatives")),
-          T2.of(methodDescriptor("getClass"), Object.class.getDeclaredMethod("getClass")),
-          T2.of(methodDescriptor("clone"), Object.class.getDeclaredMethod("clone")),
-          T2.of(methodDescriptor("finalize"), Object.class.getDeclaredMethod("finalize")),
-          T2.of(methodDescriptor("notify"), Object.class.getDeclaredMethod("notify")),
-          T2.of(methodDescriptor("notifyAll"), Object.class.getDeclaredMethod("notifyAll")),
-          T2.of(methodDescriptor("wait"), Object.class.getDeclaredMethod("wait")),
-          T2.of(methodDescriptor("wait", long.class), Object.class.getDeclaredMethod("wait", long.class)),
-          T2.of(methodDescriptor("wait", long.class, int.class),
-                Object.class.getDeclaredMethod("wait", long.class, int.class)),
-          T2.of(methodDescriptor("toString"), Object.class.getDeclaredMethod("toString")),
-          T2.of(methodDescriptor("equals", Object.class), A.class.getMethod("equals", Object.class)),
-          T2.of(methodDescriptor("hashCode"), Object.class.getMethod("hashCode"))
-
+        T2.of(methodDescriptor("getClass"), Object.class.getDeclaredMethod("getClass")),
+        T2.of(methodDescriptor("clone"), Object.class.getDeclaredMethod("clone")),
+        T2.of(methodDescriptor("finalize"), Object.class.getDeclaredMethod("finalize")),
+        T2.of(methodDescriptor("notify"), Object.class.getDeclaredMethod("notify")),
+        T2.of(methodDescriptor("notifyAll"), Object.class.getDeclaredMethod("notifyAll")),
+        T2.of(methodDescriptor("wait"), Object.class.getDeclaredMethod("wait")),
+        T2.of(methodDescriptor("wait", long.class), Object.class.getDeclaredMethod("wait", long.class)),
+        T2.of(methodDescriptor("wait", long.class, int.class),
+              Object.class.getDeclaredMethod("wait", long.class, int.class)),
+        T2.of(methodDescriptor("toString"), Object.class.getDeclaredMethod("toString")),
+        T2.of(methodDescriptor("equals", Object.class), A.class.getMethod("equals", Object.class)),
+        T2.of(methodDescriptor("hashCode"), Object.class.getMethod("hashCode"))
       );
     } catch (Exception e) {
       throw e instanceof RuntimeException ? (RuntimeException)e : new RuntimeException(e);

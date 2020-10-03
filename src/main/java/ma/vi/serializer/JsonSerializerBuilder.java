@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Vikash Madhow
  */
 
-package ma.vi.serialization;
+package ma.vi.serializer;
 
 /**
  * A builder for {@link JsonSerializer} providing a simple method for

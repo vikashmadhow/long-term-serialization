@@ -28,7 +28,7 @@ import static ma.vi.reflect.Classes.componentType;
  * </p>
  *
  * <p>
- * Literals are saved as simple string values by {@link ma.vi.serialization.Mapper}
+ * Literals are saved as simple string values by {@link ma.vi.serializer.Mapper}
  * instead of as references.
  * </p>
  *

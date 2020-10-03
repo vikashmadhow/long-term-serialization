@@ -14,7 +14,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 
-group 'ma.vi'
+group 'ma.vi.serializer'
 version = "0.4.1"
 
 //sourceCompatibility = JavaVersion.VERSION_14

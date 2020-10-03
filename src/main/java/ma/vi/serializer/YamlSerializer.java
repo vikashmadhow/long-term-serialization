@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Vikash Madhow
  */
 
-package ma.vi.serialization;
+package ma.vi.serializer;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.events.Event;
@@ -18,8 +18,8 @@ import java.util.*;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.repeat;
 import static java.util.Map.Entry;
-import static ma.vi.serialization.Mapper.OBJ_NAME_PREFIX;
-import static ma.vi.serialization.Mapper.uniqueObjectName;
+import static ma.vi.serializer.Mapper.OBJ_NAME_PREFIX;
+import static ma.vi.serializer.Mapper.uniqueObjectName;
 
 /**
  * The YAML serializer.
