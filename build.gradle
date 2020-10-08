@@ -7,65 +7,108 @@
  *
  * @author Vikash Madhow (vikash.madhow@gmail.com)
  */
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+}
+
 plugins {
-    id "maven-publish"
+  id "java-library"
+  id "maven-publish"
+  id "signing"
+  id "de.marcphilipp.nexus-publish" version "0.3.0"
 }
-
-apply plugin: 'java'
-apply plugin: 'idea'
-
-group 'ma.vi.serializer'
-version = "0.4.1"
-
-//sourceCompatibility = JavaVersion.VERSION_14
-
-project.ext {
-    moduleName = "ma.vi.serializer"
-}
-
-jar {
-    archiveBaseName = project.moduleName
-    inputs.property("moduleName", project.moduleName)
-    manifest {
-        attributes('Automatic-Module-Name': project.moduleName)
-    }
-}
-//
-//task sourceJar(type: Jar) {
-//    from sourceSets.main.allJava
-//}
-
-//publishing {
-//    publications {
-//        mavenJava(MavenPublication) {
-//            from components.java
-//
-//            artifact sourceJar {
-//                classifier "sources"
-//            }
-//        }
-//    }
-//}
 
 repositories {
-    mavenLocal()
-    mavenCentral()
-    jcenter()
+  mavenLocal()
+  mavenCentral()
+  jcenter()
+}
+
+sourceSets {
+  main {
+    java {
+      srcDirs = ['src/main/java']
+    }
+    resources {
+      srcDirs = ['src/main/resources']
+    }
+  }
+  test {
+    java {
+      srcDirs = ['src/test/java']
+    }
+    resources {
+      srcDirs = ['src/test/resources']
+    }
+  }
 }
 
 dependencies {
-    compile "org.apache.commons:commons-lang3:latest.release"
-    compile "com.google.guava:guava:latest.release"
+  compile "com.vikmad:base:0.1.2"
+  compile "org.yaml:snakeyaml:latest.release"
 
-    compile "com.fasterxml.jackson.core:jackson-core:latest.release"
-    compile "com.fasterxml.woodstox:woodstox-core:latest.release"
+  testImplementation "junit:junit:latest.release"
+}
 
-    compile "com.vikmad:base:0.1.2"
+sourceCompatibility = JavaVersion.VERSION_14
+group = "com.vikmad"
+version = "0.4.1"
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
-    compile "org.yaml:snakeyaml:latest.release"
-    compile "org.json:json:latest.release"
+java {
+  withJavadocJar()
+  withSourcesJar()
+}
 
-    compile "org.bouncycastle:bcprov-jdk15on:1.64"
+publishing {
+  repositories {
+    maven {
+      def releaseRepo = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+      def snapshotRepo = "https://oss.sonatype.org/content/repositories/snapshots/"
+      url = isReleaseVersion ? releaseRepo : snapshotRepo
+      credentials {
+        username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
+        password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
+      }
+    }
+  }
 
-    testImplementation "junit:junit:latest.release"
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+      pom {
+        artifactId = 'serializer'
+        description = 'A library for serializing (and deserializing) Java object graphs to various text formats such as XML, JSON and YAML, useful for long-term storage with a focus on human readability and external modification'
+        url = 'https://github.com/vikashmadhow/long-term-serialization'
+        licenses {
+          license {
+            name = 'The Apache License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        scm {
+          url = 'https://github.com/vikashmadhow/long-term-serialization'
+          connection = 'scm:https://github.com/vikashmadhow/long-term-serialization.git'
+          developerConnection = 'scm:git://github.com/vikashmadhow/long-term-serialization.git'
+        }
+      }
+    }
+  }
+}
+
+signing {
+  sign publishing.publications.mavenJava
+}
+
+tasks.withType(Sign) {
+  onlyIf { isReleaseVersion }
+}
+
+nexusPublishing {
+  repositories {
+    sonatype()
+  }
 }

@@ -169,7 +169,7 @@ import static org.apache.commons.lang3.StringUtils.countMatches;
  * </ul>
  * <p>
  * The Mapper can also map primitive and special objects although this is
- * not its primary purpose. Literal types ({@link ma.vi.lang.Literal}) which
+ * not its primary purpose. Literal types ({@link ma.vi.base.lang.Literal}) which
  * includes primitives and arrays of literals are mapped to their literal
  * (textual) form resulting in a more concise representation while remaining
  * easily human-readable:
