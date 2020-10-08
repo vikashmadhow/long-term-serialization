@@ -8,6 +8,19 @@ representation-independent structure (Mapped) which is then transformed to any t
 Currently  XML, JSON and YAML are supported but serialization to any format can be
 added with little effort.
 
+ ## Use in your projects
+ To use through Maven, include the following dependency in your pom.xml file:
+ 
+    <dependency>
+      <groupId>com.vikmad</groupId>
+      <artifactId>serializer</artifactId>
+      <version>0.4.1</version>
+    </dependency>
+    
+or in Gradle, add the following line to your dependencies list in your build.gradle file:
+
+    compile "com.vikmad:serializer:0.4.1"
+
 ## Usage
 
 `Mapper` is a class with two primary methods: `toMap` takes the root of an object graph and
@@ -40,17 +53,3 @@ to configure and get an instance of a serializer. E.g:
  instance which can then be passed to the `fromMap` method of `Mapper` to get back the object
  graph.
  
- ## Installation
- To use through Maven, include the following dependency in your pom.xml file:
- 
-    <dependency>
-      <groupId>com.vikmad</groupId>
-      <artifactId>serializer</artifactId>
-      <version>0.4.1</version>
-    </dependency>
-    
-or in Gradle, add the following line to your dependencies list in your build.gradle file:
-
-  compile "com.vikmad:serializer:0.4.1"
-  
-  
