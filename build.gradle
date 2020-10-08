@@ -60,6 +60,8 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-core:latest.release"
     compile "com.fasterxml.woodstox:woodstox-core:latest.release"
 
+    compile "com.vikmad:base:0.1.2"
+
     compile "org.yaml:snakeyaml:latest.release"
     compile "org.json:json:latest.release"
 

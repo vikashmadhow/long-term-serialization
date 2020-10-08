@@ -4,9 +4,9 @@
 
 package ma.vi.serializer;
 
-import ma.vi.xml.Fragment;
-import ma.vi.xml.XmlReader;
-import ma.vi.xml.XmlReaderBuilder;
+import ma.vi.base.xml.Fragment;
+import ma.vi.base.xml.XmlReader;
+import ma.vi.base.xml.XmlReaderBuilder;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,10 +18,10 @@ import java.util.Set;
 
 import static com.google.common.base.Strings.repeat;
 import static java.util.Map.Entry;
-import static ma.vi.lang.Literal.NULL_LITERAL;
+import static ma.vi.base.lang.Literal.NULL_LITERAL;
 import static ma.vi.serializer.Mapper.OBJ_NAME_PREFIX;
 import static ma.vi.serializer.Mapper.uniqueObjectName;
-import static ma.vi.xml.Fragment.Type.T_START_ELEMENT;
+import static ma.vi.base.xml.Fragment.Type.T_START_ELEMENT;
 
 /**
  * The XML serializer.

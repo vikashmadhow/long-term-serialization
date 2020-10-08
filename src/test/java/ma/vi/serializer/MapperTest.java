@@ -4,9 +4,9 @@
 
 package ma.vi.serializer;
 
-import ma.vi.collections.Maps;
-import ma.vi.tuple.T2;
-import ma.vi.tuple.T3;
+import ma.vi.base.collections.Maps;
+import ma.vi.base.tuple.T2;
+import ma.vi.base.tuple.T3;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import java.util.*;
 import static java.util.Collections.*;
 import static java.util.Map.Entry;
 import static java.util.stream.Collectors.toMap;
-import static ma.vi.lang.Literal.NULL_LITERAL;
+import static ma.vi.base.lang.Literal.NULL_LITERAL;
 import static org.junit.Assert.*;
 
 /**

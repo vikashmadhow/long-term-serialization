@@ -4,7 +4,7 @@
 
 package ma.vi.serializer;
 
-import ma.vi.lang.Names;
+import ma.vi.base.lang.Names;
 
 import java.util.regex.Pattern;
 

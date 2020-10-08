@@ -4,9 +4,9 @@
 
 package ma.vi.serializer;
 
-import ma.vi.collections.Maps;
-import ma.vi.tuple.T2;
-import ma.vi.tuple.T3;
+import ma.vi.base.collections.Maps;
+import ma.vi.base.tuple.T2;
+import ma.vi.base.tuple.T3;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import java.util.*;
 
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
-import static ma.vi.lang.Literal.NULL_LITERAL;
+import static ma.vi.base.lang.Literal.NULL_LITERAL;
 import static ma.vi.serializer.MapperTest.*;
 import static org.junit.Assert.assertEquals;
 
@@ -34,7 +34,7 @@ public class YamlSerializerTest {
   private G[][] j;
   private K k;
 
-  private String ls = "\n";
+  private final String ls = "\n";
 
   @Before
   public void init() {

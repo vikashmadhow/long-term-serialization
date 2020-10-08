@@ -7,8 +7,8 @@ package ma.vi.serializer;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import ma.vi.reflect.Dissector;
-import ma.vi.tuple.T2;
+import ma.vi.base.reflect.Dissector;
+import ma.vi.base.tuple.T2;
 
 import java.io.Externalizable;
 import java.io.ObjectInputStream;
@@ -20,13 +20,13 @@ import java.util.*;
 import static java.lang.Integer.parseInt;
 import static java.lang.reflect.Modifier.*;
 import static java.util.Collections.singletonMap;
-import static ma.vi.lang.Errors.unchecked;
-import static ma.vi.lang.Literal.*;
-import static ma.vi.lang.Names.toIdentifier;
-import static ma.vi.lang.Names.uniqueRandomName;
-import static ma.vi.lang.UnsafeLoader.unsafe;
-import static ma.vi.reflect.Classes.*;
-import static ma.vi.string.Strings.uncapFirst;
+import static ma.vi.base.lang.Errors.unchecked;
+import static ma.vi.base.lang.Literal.*;
+import static ma.vi.base.lang.Names.toIdentifier;
+import static ma.vi.base.lang.Names.uniqueRandomName;
+import static ma.vi.base.lang.UnsafeLoader.unsafe;
+import static ma.vi.base.reflect.Classes.*;
+import static ma.vi.base.string.Strings.uncapFirst;
 import static org.apache.commons.lang3.StringUtils.countMatches;
 
 /**

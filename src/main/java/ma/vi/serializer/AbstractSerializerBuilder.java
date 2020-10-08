@@ -4,7 +4,7 @@
 
 package ma.vi.serializer;
 
-import ma.vi.lang.Builder;
+import ma.vi.base.lang.Builder;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
