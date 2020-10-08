@@ -39,3 +39,18 @@ to configure and get an instance of a serializer. E.g:
  Call the `toMap` method of the serializer passing in the serialized text to get back the `Mapped`
  instance which can then be passed to the `fromMap` method of `Mapper` to get back the object
  graph.
+ 
+ ## Installation
+ To use through Maven, include the following dependency in your pom.xml file:
+ 
+    <dependency>
+      <groupId>com.vikmad</groupId>
+      <artifactId>serializer</artifactId>
+      <version>0.4.1</version>
+    </dependency>
+    
+or in Gradle, add the following line to your dependencies list in your build.gradle file:
+
+  compile "com.vikmad:serializer:0.4.1"
+  
+  
