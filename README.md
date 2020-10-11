@@ -14,7 +14,7 @@ added with little effort.
     <dependency>
       <groupId>com.vikmad</groupId>
       <artifactId>serializer</artifactId>
-      <version>0.4.1</version>
+      <version>0.4.2</version>
     </dependency>
     
 or in Gradle, add the following line to your dependencies list in your build.gradle file:
